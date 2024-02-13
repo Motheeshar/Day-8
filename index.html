@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super Over</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <style>
+ 
+  </style>
+
+  <body>
+    <img
+      id="logo"
+      src="https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/front-end-web-development/so-logo.png"
+    />
+    <section>
+      <div class="score" id="team1">
+        <h1>IND</h1>
+        <div id="team1-superover" class="balls">
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+        </div>
+        <div class="scoreboard">
+          <span id="score-team1">0</span>
+          <span>/</span>
+          <span id="wickets-team1">0</span>
+        </div>
+      </div>
+      <div class="score" id="team2">
+        <h1>PAK</h1>
+        <div id="team2-superover" class="balls">
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+          <div class="ball"></div>
+        </div>
+        <div class="scoreboard">
+          <span id="score-team2">0</span>
+          <span>/</span>
+          <span id="wickets-team2">0</span>
+        </div>
+      </div>
+    </section>
+    <section id="buttons">
+      <img
+        class="button"
+        id="strike"
+        src="https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/front-end-web-development/so-strike-button.png"
+      />
+      <img
+        class="button"
+        id="reset"
+        src="https://s3.ap-south-1.amazonaws.com/kalvi-education.github.io/front-end-web-development/so-reset-button.png"
+      />
+    </section>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const team1ScoreDisplay = document.getElementById("score-team1");
+    const team2ScoreDisplay = document.getElementById("score-team2");
+    const team1WicketsDisplay = document.getElementById("wickets-team1");
+    const team2WicketsDisplay = document.getElementById("wickets-team2");
+    const team1StrikeButton = document.getElementById("strike");
+    const team2StrikeButton = document.getElementById("strike");
+    const team1BallContainer = document.getElementById("team1-superover");
+    const team2BallContainer = document.getElementById("team2-superover");
+  
+    let team1Score = 0;
+    let team2Score = 0;
+    let team1Wickets = 0;
+    let team2Wickets = 0;
+    let currentBattingTeam = "team1"; // Start with Team 1 batting
+  
+    // Function to generate random score between 1 to 6
+    function generateRandomScore() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
+  
+    // Function to update scoreboard
+    function updateScoreboard(score, ballContainer, scoreDisplay, wickets) {
+      if (wickets <= 6) {
+        const ball = document.createElement("div");
+        ball.classList.add("ball");
+        ball.textContent = score;
+        ballContainer.appendChild(ball);
+      }
+      scoreDisplay.textContent = team1Score + "/" + team1Wickets;
+      team2ScoreDisplay.textContent = team2Score + "/" + team2Wickets;
+    }
+  
+    // Function to handle scoring for team 1
+    team1StrikeButton.addEventListener("click", function () {
+      if (currentBattingTeam === "team1") {
+        const score = generateRandomScore();
+        if (team1Wickets < 6) {
+          team1Score += score;
+          team1Wickets++;
+          updateScoreboard(score, team1BallContainer, team1ScoreDisplay, team1Wickets);
+        } else {
+          switchBattingTeam(); // Switch to Team 2's turn
+        }
+      }
+    });
+  
+    // Function to handle scoring for team 2
+    team2StrikeButton.addEventListener("click", function () {
+      if (currentBattingTeam === "team2") {
+        const score = generateRandomScore();
+        if (team2Wickets < 6) {
+          team2Score += score;
+          team2Wickets++;
+          updateScoreboard(score, team2BallContainer, team2ScoreDisplay, team2Wickets);
+        }
+      }
+    });
+  
+    // Function to switch batting team
+    function switchBattingTeam() {
+      currentBattingTeam = "team2";
+      // Optionally, you can automatically trigger a click event on Team 2's strike button
+      team2StrikeButton.click();
+    }
+  
+    // Reset button functionality
+    const resetButton = document.getElementById("reset");
+    resetButton.addEventListener("click", function () {
+      team1Score = 0;
+      team2Score = 0;
+      team1Wickets = 0;
+      team2Wickets = 0;
+      team1BallContainer.innerHTML = ""; // Clear ball display
+      team2BallContainer.innerHTML = ""; // Clear ball display
+      team1ScoreDisplay.textContent = "0/0";
+      team2ScoreDisplay.textContent = "0/0";
+      currentBattingTeam = "team1"; // Reset batting to Team 1
+    });
+  
+    // Start with Team 1's turn
+    switchBattingTeam();
+  });
+  
+    </script>
+  </body>
+</html>
